@@ -1,8 +1,8 @@
 import React from 'react';
+import styled from 'styled-components';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './theme/GlobalStyle';
 import theme from './theme/mainTheme';
-import styled from 'styled-components';
 
 const Button = styled.button`
   background-color: ${({ theme }) => theme.red || 'white'};
