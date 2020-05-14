@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ThemeProvider } from 'styled-components';
+import GlobalStyle from './theme/GlobalStyle';
+import theme from './theme/mainTheme';
+import styled from 'styled-components';
 
-function App() {
+const Button = styled.button`
+  background-color: ${({ theme }) => theme.red || 'white'};
+`;
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <div className="App">
+        <h1>Hi socialApp!</h1>
+        <Button>add</Button>
+      </div>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
