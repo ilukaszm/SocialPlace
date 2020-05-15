@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import LoginButton from '../components/atoms/LoginButton/LoginButton';
+import LoginButton from '../components/atoms/ButtonLogin/ButtonLogin';
 import facebook from '../assets/icons/facebook.svg';
 import google from '../assets/icons/google.svg';
 import logoBig from '../assets/LogoBig.svg';
