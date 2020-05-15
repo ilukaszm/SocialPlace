@@ -6,8 +6,8 @@ const theme = {
   },
   yellow: '#F9DC5C',
   red: '#D72247',
-  darkred: '#F9DC5C',
-  darkblue: '#011936',
+  darkRed: '#F9DC5C',
+  darkBlue: '#011936',
 };
 
 export default theme;
