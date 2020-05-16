@@ -3,12 +3,10 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../../../assets/LogoSmall.svg';
 import AccountPanel from '../../molecules/AccountPanel/AccountPanel';
-import Input from '../../atoms/Input/Input';
 
 const NavigationWrapper = styled.nav`
   display: flex;
   flex-direction: column;
-  /* flex-wrap: wrap; */
 
   @media (min-width: 1024px) {
     flex-direction: row;
@@ -36,15 +34,6 @@ const NavigationItem = styled(NavLink)`
   }
 `;
 
-const StyledInput = styled(Input)`
-  width: 80vw;
-  margin: 0 auto 20px;
-
-  @media (min-width: 1024px) {
-    width: 45vw;
-  }
-`;
-
 const NavBar = () => {
   return (
     <>
@@ -69,7 +58,6 @@ const NavBar = () => {
         </NavigationItemList>
         <AccountPanel />
       </NavigationWrapper>
-      <StyledInput placeholder="Search post" search />
     </>
   );
 };

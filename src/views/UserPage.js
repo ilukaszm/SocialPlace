@@ -1,22 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
-import NavBar from '../components/organisms/NavBar/NavBar';
+import UserPageTemplate from '../templates/UserPageTemplate';
 import Post from '../components/molecules/Post/Post';
+import Input from '../components/atoms/Input/Input';
 
-const UserPageWrapper = styled.div`
-  max-width: 1024px;
-  margin: 0 auto;
+const StyledInput = styled(Input)`
+  width: 80vw;
+  margin: 0 auto 20px;
+
+  @media (min-width: 1024px) {
+    width: 45vw;
+  }
 `;
 
 const UserPage = () => {
   return (
-    <UserPageWrapper>
-      <NavBar />
+    <UserPageTemplate>
+      <StyledInput placeholder="Search post" search />
       <Post />
       <Post />
       <Post />
       <Post />
-    </UserPageWrapper>
+    </UserPageTemplate>
   );
 };
 

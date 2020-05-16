@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Heading from '../../atoms/Heading/Heading';
 import Paragraph from '../../atoms/Paragraph/Paragraph';
 import Button from '../../atoms/Button/Button';
 import avatar from '../../../assets/avatar.svg';
@@ -15,8 +14,9 @@ const AvatarAccount = styled.div`
 `;
 
 const StyledWrapper = styled.div`
-  display: flex;
+  padding-left: 50px;
   margin-bottom: 20px;
+  display: flex;
 `;
 
 const InnerWrapper = styled.div`
@@ -29,22 +29,12 @@ const StyledParagraph = styled(Paragraph)`
   margin: 10px 0;
 `;
 
-const Post = () => {
+const Comment = () => {
   return (
     <StyledWrapper>
       <AvatarAccount />
       <InnerWrapper>
-        <Heading small>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum sunt est nam repudiandae
-          molestiae incidunt recusandae eius unde quae neque?
-        </Heading>
-        <StyledParagraph>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt quas id aliquam earum
-          voluptatibus illo eligendi eum enim sed error? Lorem ipsum dolor sit amet, consectetur
-          adipisicing elit. Sunt quas id aliquam earum voluptatibus illo eligendi eum enim sed
-          error? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt quas id aliquam
-          earum voluptatibus illo eligendi eum enim sed error?
-        </StyledParagraph>
+        <StyledParagraph>Lorem ipsum dolor sit amet</StyledParagraph>
         <Button>comments</Button>
       </InnerWrapper>
       <StatsPost />
@@ -52,4 +42,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default Comment;

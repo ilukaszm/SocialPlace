@@ -5,6 +5,7 @@ import GlobalStyle from '../theme/GlobalStyle';
 import theme from '../theme/mainTheme';
 import LoginPage from './LoginPage';
 import UserPage from './UserPage';
+import PostPage from './PostPage';
 
 const Root = () => {
   return (
@@ -13,7 +14,8 @@ const Root = () => {
         <GlobalStyle />
         <Switch>
           <Route exact path="/" component={LoginPage} />
-          <Route path="/home" component={UserPage} />
+          <Route exact path="/home" component={UserPage} />
+          <Route path="/home/post/:id" component={PostPage} />
         </Switch>
       </ThemeProvider>
     </Router>

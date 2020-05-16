@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const ButtonIcon = styled.button`
   width: 30px;
@@ -8,6 +8,12 @@ const ButtonIcon = styled.button`
   background-image: url(${({ icon }) => icon});
   background-repeat: no-repeat;
   background-position: center;
+
+  ${({ second }) =>
+    second &&
+    css`
+      background-color: ${({ theme }) => theme.red};
+    `}
 `;
 
 export default ButtonIcon;
