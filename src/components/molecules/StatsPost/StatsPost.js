@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Paragraph from '../../atoms/Paragraph/Paragraph';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
@@ -14,15 +15,20 @@ const StatsPostWrapper = styled.div`
   align-items: center;
 `;
 
-const StatsPost = () => {
+const StatsPost = ({ plus, minus }) => {
   return (
     <StatsPostWrapper>
       <ButtonIcon icon={smallPlus} />
-      <Paragraph>100</Paragraph>
+      <Paragraph>{plus}</Paragraph>
       <ButtonIcon icon={smallMinus} />
-      <Paragraph>100</Paragraph>
+      <Paragraph>{minus}</Paragraph>
     </StatsPostWrapper>
   );
+};
+
+StatsPost.propTypes = {
+  plus: PropTypes.string.isRequired,
+  minus: PropTypes.string.isRequired,
 };
 
 export default StatsPost;

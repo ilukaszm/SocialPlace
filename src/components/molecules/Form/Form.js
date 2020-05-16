@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
@@ -15,6 +16,8 @@ const StyledForm = styled.form`
   align-items: center;
   background-color: white;
   border-left: 10px solid ${({ theme }) => theme.red};
+  transition: 0.3s ease-in;
+  transform: translateX(${({ visibility }) => (visibility ? '0' : '100%')});
 
   @media (min-width: 1024px) {
     width: 60%;
@@ -40,15 +43,24 @@ const StyledTextArea = styled(StyledInput)`
   height: 300px;
 `;
 
-const Form = () => {
+const Form = ({ visibility, submitFn }) => {
   return (
-    <StyledForm>
+    <StyledForm visibility={visibility} onSubmit={submitFn}>
       <StyledHeading small>add new post</StyledHeading>
       <StyledInput placeholder="title" />
       <StyledTextArea as="textarea" placeholder="description" />
-      <Button>add</Button>
+      <Button type="submit">add</Button>
     </StyledForm>
   );
+};
+
+Form.propTypes = {
+  visibility: PropTypes.bool,
+  submitFn: PropTypes.func.isRequired,
+};
+
+Form.defaultProps = {
+  visibility: false,
 };
 
 export default Form;

@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Heading from '../../atoms/Heading/Heading';
 import Paragraph from '../../atoms/Paragraph/Paragraph';
 import Button from '../../atoms/Button/Button';
-import avatar from '../../../assets/avatar.svg';
 import StatsPost from '../StatsPost/StatsPost';
 
 const AvatarAccount = styled.div`
@@ -11,7 +11,9 @@ const AvatarAccount = styled.div`
   width: 55px;
   height: 55px;
   border-radius: 50px;
-  background-image: url(${avatar});
+  background-image: url(${({ avatarURL }) => avatarURL});
+  background-size: cover;
+  background-position: center;
 `;
 
 const StyledWrapper = styled.div`
@@ -29,27 +31,26 @@ const StyledParagraph = styled(Paragraph)`
   margin: 10px 0;
 `;
 
-const Post = () => {
+const Post = ({ avatarLink, title, content, plus, minus }) => {
   return (
     <StyledWrapper>
-      <AvatarAccount />
+      <AvatarAccount avatarURL={avatarLink} />
       <InnerWrapper>
-        <Heading small>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum sunt est nam repudiandae
-          molestiae incidunt recusandae eius unde quae neque?
-        </Heading>
-        <StyledParagraph>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt quas id aliquam earum
-          voluptatibus illo eligendi eum enim sed error? Lorem ipsum dolor sit amet, consectetur
-          adipisicing elit. Sunt quas id aliquam earum voluptatibus illo eligendi eum enim sed
-          error? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt quas id aliquam
-          earum voluptatibus illo eligendi eum enim sed error?
-        </StyledParagraph>
+        <Heading small>{title}</Heading>
+        <StyledParagraph>{content}</StyledParagraph>
         <Button>comments</Button>
       </InnerWrapper>
-      <StatsPost />
+      <StatsPost plus={plus} minus={minus} />
     </StyledWrapper>
   );
+};
+
+Post.propTypes = {
+  avatarLink: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  plus: PropTypes.number.isRequired,
+  minus: PropTypes.number.isRequired,
 };
 
 export default Post;
