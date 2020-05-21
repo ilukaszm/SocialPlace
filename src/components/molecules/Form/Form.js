@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
@@ -44,11 +45,14 @@ const StyledTextArea = styled(StyledInput)`
 `;
 
 const Form = ({ visibility, submitFn }) => {
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data) => submitFn(data);
+
   return (
-    <StyledForm visibility={visibility} onSubmit={submitFn}>
+    <StyledForm visibility={visibility} onSubmit={handleSubmit(onSubmit)}>
       <StyledHeading small>add new post</StyledHeading>
-      <StyledInput placeholder="title" />
-      <StyledTextArea as="textarea" placeholder="description" />
+      <StyledInput name="title" placeholder="title" ref={register()} />
+      <StyledTextArea as="textarea" name="content" placeholder="description" ref={register} />
       <Button type="submit">add</Button>
     </StyledForm>
   );

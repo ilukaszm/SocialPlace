@@ -41,17 +41,17 @@ const NavBar = () => {
         <img src={logo} alt="logo" />
         <NavigationItemList>
           <li>
-            <NavigationItem exact activeClassName="is-active" to="/home">
+            <NavigationItem exact activeClassName="is-active" to="/">
               hottest
             </NavigationItem>
           </li>
           <li>
-            <NavigationItem activeClassName="is-active" to="/home/all">
+            <NavigationItem activeClassName="is-active" to="/all">
               all posts
             </NavigationItem>
           </li>
           <li>
-            <NavigationItem activeClassName="is-active" to="/home/post">
+            <NavigationItem activeClassName="is-active" to="/posts">
               your posts
             </NavigationItem>
           </li>

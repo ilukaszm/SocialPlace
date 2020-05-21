@@ -12,6 +12,7 @@
       }
     ],
     "import/no-duplicates": 0,
-    "no-shadow": 0
+    "no-shadow": 0,
+    "react/jsx-props-no-spreading": 0
   }
 }

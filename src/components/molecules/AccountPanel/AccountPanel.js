@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import avatar from '../../../assets/avatar.svg';
+import { useSelector } from 'react-redux';
+import { auth } from '../../../services/firebase';
 import settings from '../../../assets/icons/settings.svg';
 import logout from '../../../assets/icons/logout.svg';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
@@ -18,7 +19,9 @@ const AvatarAccount = styled.div`
   width: 55px;
   height: 55px;
   border-radius: 50px;
-  background-image: url(${avatar});
+  background-image: url(${({ avatarURL }) => avatarURL});
+  background-position: center;
+  background-size: cover;
 `;
 
 const AccountWrapper = styled.div`
@@ -33,14 +36,21 @@ const StyledParagraph = styled.p`
 `;
 
 const AccountPanel = () => {
+  const currentUser = useSelector((state) => state.auth.user);
+
   return (
     <AccountPanelWrapper>
       <AccountWrapper>
         <ButtonIcon icon={settings} />
-        <ButtonIcon icon={logout} />
-        <AvatarAccount />
+        <ButtonIcon
+          icon={logout}
+          onClick={() => {
+            auth().signOut();
+          }}
+        />
+        <AvatarAccount avatarURL={currentUser.avatarURL} />
       </AccountWrapper>
-      <StyledParagraph>Łukasz Michalak</StyledParagraph>
+      <StyledParagraph>{currentUser.email}</StyledParagraph>
     </AccountPanelWrapper>
   );
 };

@@ -31,22 +31,23 @@ const StyledParagraph = styled(Paragraph)`
   margin: 10px 0;
 `;
 
-const Post = ({ avatarLink, title, content, plus, minus }) => {
+const Post = ({ id, avatarURL, title, content, plus, minus }) => {
   return (
     <StyledWrapper>
-      <AvatarAccount avatarURL={avatarLink} />
+      <AvatarAccount avatarURL={avatarURL} />
       <InnerWrapper>
         <Heading small>{title}</Heading>
         <StyledParagraph>{content}</StyledParagraph>
         <Button>comments</Button>
       </InnerWrapper>
-      <StatsPost plus={plus} minus={minus} />
+      <StatsPost id={id} plus={plus} minus={minus} />
     </StyledWrapper>
   );
 };
 
 Post.propTypes = {
-  avatarLink: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  avatarURL: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   plus: PropTypes.number.isRequired,

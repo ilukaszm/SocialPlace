@@ -1,8 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import LoginButton from '../components/atoms/ButtonLogin/ButtonLogin';
-import facebook from '../assets/icons/facebook.svg';
-import google from '../assets/icons/google.svg';
 import logoBig from '../assets/LogoBig.svg';
 import logoSmall from '../assets/LogoSmall.svg';
 import Heading from '../components/atoms/Heading/Heading';
@@ -55,22 +53,13 @@ const StyledHeading = styled(Heading)`
   margin-bottom: 60px;
 `;
 
-const StyledLoginButton = styled(LoginButton)`
-  margin-bottom: 20px;
-
-  @media (min-width: 768px) {
-    width: 450px;
-    margin-bottom: 40px;
-  }
-`;
-
 const StyledFooter = styled.footer`
   @media (min-width: 1024px) {
     display: none;
   }
 `;
 
-const LoginPageTemplate = () => {
+const LoginPageTemplate = ({ children }) => {
   return (
     <StyledWrapper>
       <StyledLogoWrapper>
@@ -79,14 +68,17 @@ const LoginPageTemplate = () => {
       </StyledLogoWrapper>
       <InnerWrapper>
         <StyledHeading>Join us</StyledHeading>
-        <StyledLoginButton icon={facebook}>facebook</StyledLoginButton>
-        <StyledLoginButton icon={google}>google</StyledLoginButton>
+        {children}
       </InnerWrapper>
       <StyledFooter>
         <img src={footer} alt="footer" />
       </StyledFooter>
     </StyledWrapper>
   );
+};
+
+LoginPageTemplate.propTypes = {
+  children: PropTypes.element.isRequired,
 };
 
 export default LoginPageTemplate;

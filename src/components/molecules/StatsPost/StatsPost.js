@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { addPlus, addMinus } from '../../../actions';
 import Paragraph from '../../atoms/Paragraph/Paragraph';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
 import smallMinus from '../../../assets/icons/smallMinus.svg';
@@ -15,18 +17,21 @@ const StatsPostWrapper = styled.div`
   align-items: center;
 `;
 
-const StatsPost = ({ plus, minus }) => {
+const StatsPost = ({ id, plus, minus }) => {
+  const dispatch = useDispatch();
+
   return (
     <StatsPostWrapper>
-      <ButtonIcon icon={smallPlus} />
+      <ButtonIcon name="plus" onClick={() => dispatch(addPlus(id))} icon={smallPlus} />
       <Paragraph>{plus}</Paragraph>
-      <ButtonIcon icon={smallMinus} />
+      <ButtonIcon onClick={() => dispatch(addMinus(id))} icon={smallMinus} />
       <Paragraph>{minus}</Paragraph>
     </StatsPostWrapper>
   );
 };
 
 StatsPost.propTypes = {
+  id: PropTypes.string.isRequired,
   plus: PropTypes.string.isRequired,
   minus: PropTypes.string.isRequired,
 };
