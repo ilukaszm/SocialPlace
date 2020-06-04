@@ -1,24 +1,21 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { auth } from '../services/firebase';
-import { login, logout } from '../actions';
 
 export default () => {
-  const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.auth.user);
+  const currentUser = JSON.parse(localStorage.getItem('authUser'));
 
   useEffect(() => {
     const setUser = (user) => {
       if (user) {
-        dispatch(login({ id: user.uid, email: user.email, avatarURL: user.photoURL }));
+        localStorage.setItem('authUser', JSON.stringify(user));
       } else {
-        dispatch(logout());
+        localStorage.removeItem('authUser');
       }
     };
     const unsubsribe = auth().onAuthStateChanged(setUser);
 
     return () => unsubsribe();
-  }, [dispatch]);
+  }, []);
 
   return currentUser;
 };

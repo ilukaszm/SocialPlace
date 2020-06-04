@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import logoBig from '../assets/LogoBig.svg';
 import logoSmall from '../assets/LogoSmall.svg';
 import Heading from '../components/atoms/Heading/Heading';
-import footer from '../assets/homepage_footer.svg';
+import footer from '../assets/homePageFooter.svg';
 
 const StyledWrapper = styled.div`
   height: 100vh;

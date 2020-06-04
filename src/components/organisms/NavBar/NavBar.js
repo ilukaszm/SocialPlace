@@ -46,12 +46,12 @@ const NavBar = () => {
             </NavigationItem>
           </li>
           <li>
-            <NavigationItem activeClassName="is-active" to="/all">
+            <NavigationItem activeClassName="is-active" to="/allposts">
               all posts
             </NavigationItem>
           </li>
           <li>
-            <NavigationItem activeClassName="is-active" to="/posts">
+            <NavigationItem activeClassName="is-active" to="/userposts">
               your posts
             </NavigationItem>
           </li>

@@ -7,6 +7,7 @@ import Paragraph from '../../atoms/Paragraph/Paragraph';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
 import smallMinus from '../../../assets/icons/smallMinus.svg';
 import smallPlus from '../../../assets/icons/smallPlus.svg';
+import { useAuthContext } from '../../../context/auth';
 
 const StatsPostWrapper = styled.div`
   padding: 10px;
@@ -19,12 +20,20 @@ const StatsPostWrapper = styled.div`
 
 const StatsPost = ({ id, plus, minus }) => {
   const dispatch = useDispatch();
+  const currentUser = useAuthContext();
 
   return (
     <StatsPostWrapper>
-      <ButtonIcon name="plus" onClick={() => dispatch(addPlus(id))} icon={smallPlus} />
+      <ButtonIcon
+        name="plus"
+        onClick={() => dispatch(addPlus(id, currentUser.uid, plus))}
+        icon={smallPlus}
+      />
       <Paragraph>{plus}</Paragraph>
-      <ButtonIcon onClick={() => dispatch(addMinus(id))} icon={smallMinus} />
+      <ButtonIcon
+        onClick={() => dispatch(addMinus(id, currentUser.uid, minus))}
+        icon={smallMinus}
+      />
       <Paragraph>{minus}</Paragraph>
     </StatsPostWrapper>
   );
@@ -32,8 +41,8 @@ const StatsPost = ({ id, plus, minus }) => {
 
 StatsPost.propTypes = {
   id: PropTypes.string.isRequired,
-  plus: PropTypes.string.isRequired,
-  minus: PropTypes.string.isRequired,
+  plus: PropTypes.number.isRequired,
+  minus: PropTypes.number.isRequired,
 };
 
 export default StatsPost;

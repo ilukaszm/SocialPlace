@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory, useLocation } from 'react-router-dom';
 import { googleAuth, fbAuth } from '../services/firebase';
 import LoginPageTemplate from '../templates/LoginPageTemplate';
 import LoginButton from '../components/atoms/ButtonLogin/ButtonLogin';
@@ -15,27 +16,33 @@ const StyledLoginButton = styled(LoginButton)`
   }
 `;
 
-const LoginPage = () => (
-  <>
+const LoginPage = () => {
+  const history = useHistory();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: '/' } };
+
+  return (
     <LoginPageTemplate>
       <StyledLoginButton
         icon={facebook}
-        onClick={() => {
-          fbAuth();
+        onClick={async () => {
+          await fbAuth();
+          history.replace(from);
         }}
       >
         facebook
       </StyledLoginButton>
       <StyledLoginButton
         icon={google}
-        onClick={() => {
-          googleAuth();
+        onClick={async () => {
+          await googleAuth();
+          history.replace(from);
         }}
       >
         google
       </StyledLoginButton>
     </LoginPageTemplate>
-  </>
-);
+  );
+};
 
 export default LoginPage;

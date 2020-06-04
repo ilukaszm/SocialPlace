@@ -1,4 +1,4 @@
-import { SET_USER_IS_SIGNED_IN, SET_USER_IS_SIGNED_OUT } from '../actions';
+import { SET_USER_IS_SIGNED_IN, SET_USER_IS_SIGNED_OUT } from '../actions/types';
 
 const initialState = {
   synced: false,

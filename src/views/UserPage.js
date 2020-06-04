@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { addPost } from '../actions';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import useFormPost from '../hooks/useFormPost';
 import UserPageTemplate from '../templates/UserPageTemplate';
 import Post from '../components/molecules/Post/Post';
 import Input from '../components/atoms/Input/Input';
@@ -41,19 +42,12 @@ const StyledButtonIcon = styled(ButtonIcon)`
 `;
 
 const UserPage = () => {
-  const [isFormVisible, setFormVisible] = useState(false);
+  const pathname = useLocation().pathname.slice(1);
+  const pageType = pathname || 'hottestposts';
+
+  const posts = useSelector((state) => state.posts[pageType]);
   const [searchPost, setSearchPost] = useState('');
-
-  const posts = useSelector((state) => state.posts);
-  const currentUser = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
-
-  const addNewPost = ({ title, content }) => {
-    const { id, avatarURL } = currentUser;
-
-    dispatch(addPost(id, avatarURL, title, content));
-    setFormVisible(false);
-  };
+  const [addNewPost, isFormVisible, setFormVisible] = useFormPost();
 
   return (
     <UserPageTemplate>

@@ -1,15 +1,16 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyAmzQgdHMBgKohpN9me-YtRP2o3mHlrvKo',
-  authDomain: 'socialapp-edc89.firebaseapp.com',
-  databaseURL: 'https://socialapp-edc89.firebaseio.com',
-  projectId: 'socialapp-edc89',
-  storageBucket: 'socialapp-edc89.appspot.com',
-  messagingSenderId: '922046472982',
-  appId: '1:922046472982:web:e90caed6fa3b0c2abfe637',
-  measurementId: 'G-11T97KFZRP',
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  databaseURL: process.env.REACT_APP_databaseURL,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_messagingSenderId,
+  appId: process.env.REACT_APP_appId,
+  measurementId: process.env.REACT_APP_measurementId,
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -17,11 +18,15 @@ firebase.initializeApp(firebaseConfig);
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 const fbProvider = new firebase.auth.FacebookAuthProvider();
 
-export const googleAuth = () => {
-  firebase.auth().signInWithPopup(googleProvider);
+export const googleAuth = async () => {
+  await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+  return firebase.auth().signInWithPopup(googleProvider);
 };
-export const fbAuth = () => {
+
+export const fbAuth = async () => {
+  await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
   firebase.auth().signInWithPopup(fbProvider);
 };
 
 export const { auth } = firebase;
+export const db = firebase.firestore();
