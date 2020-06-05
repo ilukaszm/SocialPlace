@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
 const Button = styled.button`
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 130px;
   height: 36px;
   border-radius: 20px;
@@ -8,6 +12,7 @@ const Button = styled.button`
   border: none;
   font-family: 'Montserrat', sans-serif;
   color: white;
+  text-decoration: none;
 
   :hover {
     background-color: ${({ theme }) => theme.darkRed};

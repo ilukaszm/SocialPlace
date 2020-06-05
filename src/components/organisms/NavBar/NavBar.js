@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import logo from '../../../assets/LogoSmall.svg';
+import logo from '../../../assets/logoSmall.svg';
 import AccountPanel from '../../molecules/AccountPanel/AccountPanel';
 
 const NavigationWrapper = styled.nav`

@@ -1,5 +1,6 @@
 import {
   ADD_POST,
+  ADD_COMMENT,
   ADD_PLUS_SUCCESS,
   ADD_MINUS_SUCCESS,
   FETCH_USER_POSTS_SUCCESS,
@@ -25,6 +26,27 @@ const postsReducer = (state = initialState, { type, payload }) => {
         ...state,
         userposts: [...state.userposts, { ...payload, plus: 0, minus: 0 }],
         allposts: [...state.allposts, { ...payload, plus: 0, minus: 0 }],
+      };
+
+    case ADD_COMMENT:
+      return {
+        ...state,
+        userposts: [
+          ...state.userposts.map((userpost) => {
+            if (userpost.id === payload.id) {
+              return { ...userpost, comments: [...userpost.comments, { ...payload }] };
+            }
+            return userpost;
+          }),
+        ],
+        allposts: [
+          ...state.allposts.map((post) => {
+            if (post.id === payload.id) {
+              return { ...post, comments: [...post.comments, { ...payload }] };
+            }
+            return post;
+          }),
+        ],
       };
 
     case ADD_PLUS_SUCCESS:

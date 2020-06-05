@@ -29,21 +29,11 @@ const Root = () => {
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <Switch>
-            <Route exact path="/login">
-              <LoginPage />
-            </Route>
-            <PrivateRoute exact path="/">
-              <UserPage />
-            </PrivateRoute>
-            <PrivateRoute exact path="/allposts">
-              <UserPage />
-            </PrivateRoute>
-            <PrivateRoute exact path="/userposts">
-              <UserPage />
-            </PrivateRoute>
-            <PrivateRoute exact path="/post/:id">
-              <PostPage />
-            </PrivateRoute>
+            <Route exact path="/login" component={LoginPage} />
+            <PrivateRoute exact path="/" component={UserPage} />
+            <PrivateRoute exact path="/allposts" component={UserPage} />
+            <PrivateRoute exact path="/userposts" component={UserPage} />
+            <PrivateRoute exact path="/post/:id" component={PostPage} />
           </Switch>
         </ThemeProvider>
       </Router>

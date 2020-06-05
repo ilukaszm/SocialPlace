@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import Heading from '../../atoms/Heading/Heading';
 import Paragraph from '../../atoms/Paragraph/Paragraph';
 import Button from '../../atoms/Button/Button';
@@ -38,7 +39,9 @@ const Post = ({ id, avatarURL, title, content, plus, minus }) => {
       <InnerWrapper>
         <Heading small>{title}</Heading>
         <StyledParagraph>{content}</StyledParagraph>
-        <Button>comments</Button>
+        <Button to={`/post/${id}`} as={Link}>
+          comments
+        </Button>
       </InnerWrapper>
       <StatsPost id={id} plus={plus} minus={minus} />
     </StyledWrapper>

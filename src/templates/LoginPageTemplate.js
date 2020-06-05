@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import logoBig from '../assets/LogoBig.svg';
-import logoSmall from '../assets/LogoSmall.svg';
+import logoBig from '../assets/logoBig.svg';
+import logoSmall from '../assets/logoSmall.svg';
 import Heading from '../components/atoms/Heading/Heading';
 import footer from '../assets/homePageFooter.svg';
 

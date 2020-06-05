@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Post from '../components/molecules/Post/Post';
 import ButtonIcon from '../components/atoms/ButtonIcon/ButtonIcon';
-import logo from '../assets/LogoSmall.svg';
+import logo from '../assets/logoSmall.svg';
 import plus from '../assets/icons/plus.svg';
 
 const PostPageTemplateWrapper = styled.div`

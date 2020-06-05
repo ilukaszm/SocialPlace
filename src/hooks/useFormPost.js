@@ -20,6 +20,7 @@ export default () => {
       minus: 0,
       authorId: uid,
       usersVotedId: [],
+      comments: [],
       createdDate: new Date(),
     });
 

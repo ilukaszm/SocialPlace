@@ -3,20 +3,20 @@ import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { useAuthContext } from '../../../context/auth';
 
-const PrivateRoute = ({ children, ...rest }) => {
+const PrivateRoute = ({ component: Component, ...rest }) => {
   const currentUser = useAuthContext();
 
   return (
     <Route
       {...rest}
-      render={({ location }) =>
+      render={(props) =>
         currentUser ? (
-          children
+          <Component {...props} />
         ) : (
           <Redirect
             to={{
               pathname: '/login',
-              state: { from: location },
+              state: { from: props.location },
             }}
           />
         )
@@ -26,7 +26,8 @@ const PrivateRoute = ({ children, ...rest }) => {
 };
 
 PrivateRoute.propTypes = {
-  children: PropTypes.element.isRequired,
+  component: PropTypes.element.isRequired,
+  location: PropTypes.string.isRequired,
 };
 
 export default PrivateRoute;

@@ -44,14 +44,14 @@ const StyledTextArea = styled(StyledInput)`
   height: 300px;
 `;
 
-const Form = ({ visibility, submitFn }) => {
+const Form = ({ visibility, submitFn, comment }) => {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => submitFn(data);
 
   return (
     <StyledForm visibility={visibility} onSubmit={handleSubmit(onSubmit)}>
-      <StyledHeading small>add new post</StyledHeading>
-      <StyledInput name="title" placeholder="title" ref={register()} />
+      <StyledHeading small>add new {comment ? 'comment' : 'post'}</StyledHeading>
+      {!comment && <StyledInput name="title" placeholder="title" ref={register()} />}
       <StyledTextArea as="textarea" name="content" placeholder="description" ref={register} />
       <Button type="submit">add</Button>
     </StyledForm>
@@ -60,11 +60,13 @@ const Form = ({ visibility, submitFn }) => {
 
 Form.propTypes = {
   visibility: PropTypes.bool,
+  comment: PropTypes.bool,
   submitFn: PropTypes.func.isRequired,
 };
 
 Form.defaultProps = {
   visibility: false,
+  comment: false,
 };
 
 export default Form;

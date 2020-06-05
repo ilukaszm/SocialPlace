@@ -10,6 +10,7 @@ import {
   FETCH_USER_POSTS_SUCCESS,
   FETCH_ALL_POSTS_FAILURE,
   ADD_POST,
+  ADD_COMMENT,
   ADD_PLUS_RESPOND,
   ADD_PLUS_SUCCESS,
   ADD_PLUS_FAILURE,
@@ -67,6 +68,11 @@ export const fetchAllPosts = () => async (dispatch) => {
 export const addPost = (id, avatarURL, title, content) => ({
   type: ADD_POST,
   payload: { id, avatarURL, title, content },
+});
+
+export const addComment = (id, avatarURL, content) => ({
+  type: ADD_COMMENT,
+  payload: { id, avatarURL, content },
 });
 
 export const addPlus = (id, authorId, plus) => async (dispatch) => {

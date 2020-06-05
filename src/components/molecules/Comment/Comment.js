@@ -1,8 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Paragraph from '../../atoms/Paragraph/Paragraph';
-import Button from '../../atoms/Button/Button';
-import avatar from '../../../assets/avatar.svg';
 import StatsPost from '../StatsPost/StatsPost';
 
 const AvatarAccount = styled.div`
@@ -10,7 +9,9 @@ const AvatarAccount = styled.div`
   width: 55px;
   height: 55px;
   border-radius: 50px;
-  background-image: url(${avatar});
+  background-image: url(${({ avatarURL }) => avatarURL});
+  background-size: cover;
+  background-position: center;
 `;
 
 const StyledWrapper = styled.div`
@@ -29,17 +30,21 @@ const StyledParagraph = styled(Paragraph)`
   margin: 10px 0;
 `;
 
-const Comment = () => {
+const Comment = ({ avatarURL, content }) => {
   return (
     <StyledWrapper>
-      <AvatarAccount />
+      <AvatarAccount avatarURL={avatarURL} />
       <InnerWrapper>
-        <StyledParagraph>Lorem ipsum dolor sit amet</StyledParagraph>
-        <Button>comments</Button>
+        <StyledParagraph>{content}</StyledParagraph>
       </InnerWrapper>
       <StatsPost />
     </StyledWrapper>
   );
+};
+
+Comment.propTypes = {
+  avatarURL: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
 };
 
 export default Comment;

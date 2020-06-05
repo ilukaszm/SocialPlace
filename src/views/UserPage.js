@@ -59,16 +59,8 @@ const UserPage = () => {
       />
       {posts
         .filter(({ title }) => title.toLowerCase().includes(searchPost.toLowerCase()))
-        .map(({ id, avatarURL, title, content, plus, minus }) => (
-          <Post
-            key={id}
-            id={id}
-            avatarURL={avatarURL}
-            title={title}
-            content={content}
-            plus={plus}
-            minus={minus}
-          />
+        .map(({ id, ...post }) => (
+          <Post key={id} id={id} {...post} />
         ))}
       <Form visibility={isFormVisible} submitFn={addNewPost} />
       <StyledButtonIcon icon={plus} second onClick={() => setFormVisible(!isFormVisible)} />
