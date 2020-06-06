@@ -9,6 +9,7 @@ import google from '../assets/icons/google.svg';
 
 const StyledLoginButton = styled(LoginButton)`
   margin-bottom: 20px;
+  width: 340px;
 
   @media (min-width: 768px) {
     width: 450px;

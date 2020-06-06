@@ -11,8 +11,7 @@ export default () => {
 
   const addNewPost = async ({ title, content }) => {
     const { uid, photoURL } = currentUser;
-
-    const res = await db.collection('posts').add({
+    const newPost = {
       title,
       content,
       avatarURL: photoURL,
@@ -22,10 +21,12 @@ export default () => {
       usersVotedId: [],
       comments: [],
       createdDate: new Date(),
-    });
+    };
+
+    const res = await db.collection('posts').add(newPost);
 
     if (res.id) {
-      dispatch(addPost(uid, photoURL, title, content));
+      dispatch(addPost(newPost));
     } else {
       throw new Error('Oops! We have some error! ');
     }

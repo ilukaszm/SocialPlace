@@ -35,6 +35,10 @@ const InnerWrapper = styled.div`
 `;
 
 const StyledLogoWrapper = styled.div`
+  img:nth-child(1) {
+    width: 100%;
+  }
+
   img:nth-child(2) {
     display: none;
   }

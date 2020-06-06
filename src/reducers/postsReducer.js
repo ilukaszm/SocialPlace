@@ -19,13 +19,17 @@ const postsReducer = (state = initialState, { type, payload }) => {
       return { ...state, userposts: [...payload] };
 
     case FETCH_ALL_POSTS_SUCCESS:
-      return { ...state, allposts: [...payload] };
+      return {
+        ...state,
+        allposts: [...payload],
+        hottestposts: [...payload].filter((post) => post.plus > 10),
+      };
 
     case ADD_POST:
       return {
         ...state,
-        userposts: [...state.userposts, { ...payload, plus: 0, minus: 0 }],
-        allposts: [...state.allposts, { ...payload, plus: 0, minus: 0 }],
+        userposts: [...state.userposts, { ...payload }],
+        allposts: [...state.allposts, { ...payload }],
       };
 
     case ADD_COMMENT:
@@ -54,21 +58,30 @@ const postsReducer = (state = initialState, { type, payload }) => {
         ...state,
         allposts: state.allposts.map((post) => {
           if (post.id === payload.id) {
-            return { ...post, plus: post.plus + 1 };
+            return {
+              ...post,
+              plus: post.plus + 1,
+              usersVotedId: [...post.usersVotedId, payload.authorId],
+            };
           }
           return post;
         }),
       };
 
     case ADD_MINUS_SUCCESS:
-      return [
-        ...state.map((post) => {
+      return {
+        ...state,
+        allposts: state.allposts.map((post) => {
           if (post.id === payload.id) {
-            return { ...post, minus: post.minus - 1 };
+            return {
+              ...post,
+              minus: post.minus + 1,
+              usersVotedId: [...post.usersVotedId, payload.authorId],
+            };
           }
           return post;
         }),
-      ];
+      };
 
     default:
       return state;

@@ -65,9 +65,9 @@ export const fetchAllPosts = () => async (dispatch) => {
   }
 };
 
-export const addPost = (id, avatarURL, title, content) => ({
+export const addPost = (payload) => ({
   type: ADD_POST,
-  payload: { id, avatarURL, title, content },
+  payload,
 });
 
 export const addComment = (id, avatarURL, content) => ({
@@ -75,34 +75,44 @@ export const addComment = (id, avatarURL, content) => ({
   payload: { id, avatarURL, content },
 });
 
-export const addPlus = (id, authorId, plus) => async (dispatch) => {
+export const addPlus = (id, authorId, plus) => (dispatch, getState) => {
   dispatch({ type: ADD_PLUS_RESPOND });
+
+  const isUserVoted = getState()
+    .posts.allposts.find((post) => post.id === id)
+    .usersVotedId.includes(authorId);
+
+  if (isUserVoted) return dispatch({ type: ADD_PLUS_FAILURE });
 
   const newData = {
     plus: plus + 1,
     usersVotedId: firebase.firestore.FieldValue.arrayUnion(`${authorId}`),
   };
 
-  await db
-    .collection('posts')
+  db.collection('posts')
     .doc(`${id}`)
     .update(newData)
-    .then(() => dispatch({ type: ADD_PLUS_SUCCESS, payload: { id } }))
-    .catch(() => dispatch({ type: ADD_PLUS_FAILURE }));
+    .then(() => dispatch({ type: ADD_PLUS_SUCCESS, payload: { id, authorId } }))
+    .catch((err) => dispatch({ type: ADD_PLUS_FAILURE, err }));
 };
 
-export const addMinus = (id, authorId, minus) => async (dispatch) => {
+export const addMinus = (id, authorId, minus) => (dispatch, getState) => {
   dispatch({ type: ADD_MINUS_RESPOND });
+
+  const isUserVoted = getState()
+    .posts.allposts.find((post) => post.id === id)
+    .usersVotedId.includes(authorId);
+
+  if (isUserVoted) return dispatch({ type: ADD_MINUS_FAILURE });
 
   const newData = {
     minus: minus + 1,
     usersVotedId: firebase.firestore.FieldValue.arrayUnion(`${authorId}`),
   };
 
-  await db
-    .collection('posts')
+  db.collection('posts')
     .doc(`${id}`)
     .update(newData)
-    .then(() => dispatch({ type: ADD_MINUS_SUCCESS, payload: { id } }))
+    .then(() => dispatch({ type: ADD_MINUS_SUCCESS, payload: { id, authorId } }))
     .catch(() => dispatch({ type: ADD_MINUS_FAILURE }));
 };

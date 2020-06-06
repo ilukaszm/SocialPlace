@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Paragraph from '../../atoms/Paragraph/Paragraph';
-import StatsPost from '../StatsPost/StatsPost';
 
 const AvatarAccount = styled.div`
   margin-left: 10px;
@@ -37,7 +36,6 @@ const Comment = ({ avatarURL, content }) => {
       <InnerWrapper>
         <StyledParagraph>{content}</StyledParagraph>
       </InnerWrapper>
-      <StatsPost />
     </StyledWrapper>
   );
 };

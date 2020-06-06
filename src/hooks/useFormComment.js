@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { db } from '../services/firebase';
 import { useAuthContext } from '../context/auth';
 import { addComment } from '../actions';
+import { firestoreAutoId } from '../utils/firestoreAuthId';
 
 export default (id) => {
   const [isFormVisible, setFormVisible] = useState(false);
@@ -16,10 +17,8 @@ export default (id) => {
 
     const newPost = {
       comments: firebase.firestore.FieldValue.arrayUnion({
-        content,
+        commentId: firestoreAutoId(),
         avatarURL: photoURL,
-        plus: 0,
-        minus: 0,
         authorId: uid,
         createdDate: new Date(),
       }),
