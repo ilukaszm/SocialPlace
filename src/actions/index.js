@@ -1,43 +1,36 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import { db } from '../services/firebase';
+import { postsRef, usersRef } from '../services/db';
 
 import {
-  FETCH_USER_POSTS_RESPOND,
-  FETCH_ALL_POSTS_SUCCESS,
-  FETCH_USER_POSTS_FAILURE,
-  FETCH_ALL_POSTS_RESPOND,
+  FETCH_USER_POSTS_REQUEST,
   FETCH_USER_POSTS_SUCCESS,
+  FETCH_USER_POSTS_FAILURE,
+  FETCH_USER_PROFILE_REQUEST,
+  FETCH_USER_PROFILE_SUCCESS,
+  FETCH_USER_PROFILE_FAILURE,
+  FETCH_ALL_POSTS_SUCCESS,
+  FETCH_ALL_POSTS_REQUEST,
   FETCH_ALL_POSTS_FAILURE,
-  ADD_POST,
-  ADD_COMMENT,
-  ADD_PLUS_RESPOND,
+  ADD_POST_REQUEST,
+  ADD_POST_SUCCESS,
+  ADD_POST_FAILURE,
+  ADD_COMMENT_REQUEST,
+  ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_FAILURE,
+  ADD_PLUS_REQUEST,
   ADD_PLUS_SUCCESS,
   ADD_PLUS_FAILURE,
-  ADD_MINUS_RESPOND,
+  ADD_MINUS_REQUEST,
   ADD_MINUS_SUCCESS,
   ADD_MINUS_FAILURE,
-  SET_USER_IS_SIGNED_IN,
-  SET_USER_IS_SIGNED_OUT,
 } from './types';
 
-export const login = (payload) => ({
-  type: SET_USER_IS_SIGNED_IN,
-  payload,
-});
-export const logout = () => ({
-  type: SET_USER_IS_SIGNED_OUT,
-});
-
-export const fetchUserPosts = (id) => async (dispatch) => {
-  dispatch({ type: FETCH_USER_POSTS_RESPOND });
+export const fetchUserPosts = (userId) => async (dispatch) => {
+  dispatch({ type: FETCH_USER_POSTS_REQUEST });
   const tmp = [];
 
-  const result = await db
-    .collection('posts')
-    .where('authorId', '==', id)
-    .orderBy('createdDate')
-    .get();
+  const result = await postsRef.where('authorId', '==', userId).get();
 
   if (result) {
     result.docs.forEach((doc) => {
@@ -50,10 +43,10 @@ export const fetchUserPosts = (id) => async (dispatch) => {
 };
 
 export const fetchAllPosts = () => async (dispatch) => {
-  dispatch({ type: FETCH_ALL_POSTS_RESPOND });
+  dispatch({ type: FETCH_ALL_POSTS_REQUEST });
   const tmp = [];
 
-  const result = await db.collection('posts').orderBy('createdDate').get();
+  const result = await postsRef.get();
 
   if (result) {
     result.docs.forEach((doc) => {
@@ -65,18 +58,35 @@ export const fetchAllPosts = () => async (dispatch) => {
   }
 };
 
-export const addPost = (payload) => ({
-  type: ADD_POST,
-  payload,
-});
+export const addPost = (post) => async (dispatch) => {
+  dispatch({ type: ADD_POST_REQUEST });
 
-export const addComment = (id, avatarURL, content) => ({
-  type: ADD_COMMENT,
-  payload: { id, avatarURL, content },
-});
+  try {
+    const result = await postsRef.add(post);
+
+    if (result) {
+      dispatch({ type: ADD_POST_SUCCESS, payload: { id: result.id, ...post } });
+    }
+  } catch (error) {
+    dispatch({ type: ADD_POST_FAILURE });
+    throw new Error(error.message);
+  }
+};
+
+export const addComment = (id, newComment) => async (dispatch) => {
+  dispatch({ type: ADD_COMMENT_REQUEST });
+
+  try {
+    await postsRef.doc(id).update(newComment);
+    dispatch({ type: ADD_COMMENT_SUCCESS, payload: { id, ...newComment } });
+  } catch (error) {
+    dispatch({ type: ADD_COMMENT_FAILURE });
+    throw new Error(error.message);
+  }
+};
 
 export const addPlus = (id, authorId, plus) => (dispatch, getState) => {
-  dispatch({ type: ADD_PLUS_RESPOND });
+  dispatch({ type: ADD_PLUS_REQUEST });
 
   const isUserVoted = getState()
     .posts.allposts.find((post) => post.id === id)
@@ -86,18 +96,18 @@ export const addPlus = (id, authorId, plus) => (dispatch, getState) => {
 
   const newData = {
     plus: plus + 1,
-    usersVotedId: firebase.firestore.FieldValue.arrayUnion(`${authorId}`),
+    usersVotedId: firebase.firestore.FieldValue.arrayUnion(authorId),
   };
 
-  db.collection('posts')
-    .doc(`${id}`)
+  postsRef
+    .doc(id)
     .update(newData)
     .then(() => dispatch({ type: ADD_PLUS_SUCCESS, payload: { id, authorId } }))
     .catch((err) => dispatch({ type: ADD_PLUS_FAILURE, err }));
 };
 
 export const addMinus = (id, authorId, minus) => (dispatch, getState) => {
-  dispatch({ type: ADD_MINUS_RESPOND });
+  dispatch({ type: ADD_MINUS_REQUEST });
 
   const isUserVoted = getState()
     .posts.allposts.find((post) => post.id === id)
@@ -107,12 +117,30 @@ export const addMinus = (id, authorId, minus) => (dispatch, getState) => {
 
   const newData = {
     minus: minus + 1,
-    usersVotedId: firebase.firestore.FieldValue.arrayUnion(`${authorId}`),
+    usersVotedId: firebase.firestore.FieldValue.arrayUnion(authorId),
   };
 
-  db.collection('posts')
-    .doc(`${id}`)
+  postsRef
+    .doc(id)
     .update(newData)
     .then(() => dispatch({ type: ADD_MINUS_SUCCESS, payload: { id, authorId } }))
     .catch(() => dispatch({ type: ADD_MINUS_FAILURE }));
+};
+
+export const fetchUserProfile = (userId) => async (dispatch) => {
+  dispatch({ type: FETCH_USER_PROFILE_REQUEST });
+
+  try {
+    const user = await usersRef.doc(userId).get();
+
+    if (user) {
+      dispatch({
+        type: FETCH_USER_PROFILE_SUCCESS,
+        payload: { ...user.data() },
+      });
+    }
+  } catch (error) {
+    dispatch({ type: FETCH_USER_PROFILE_FAILURE });
+    throw new Error(error.message);
+  }
 };

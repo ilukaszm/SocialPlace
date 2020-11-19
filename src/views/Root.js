@@ -5,27 +5,28 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import PrivateRoute from '../components/atoms/PrivateRoute/PrivateRoute';
 import GlobalStyle from '../theme/GlobalStyle';
 import theme from '../theme/mainTheme';
-import { fetchAllPosts, fetchUserPosts } from '../actions';
+import { fetchAllPosts, fetchUserPosts, fetchUserProfile } from '../actions';
 import LoginPage from './LoginPage';
 import UserPage from './UserPage';
 import PostPage from './PostPage';
-import { AuthContext } from '../context/auth';
 import useAuthUser from '../hooks/useAuthUser';
+import { AuthProvider } from '../context/AuthContext';
 
 const Root = () => {
-  const currentUser = useAuthUser();
+  const { userId } = useAuthUser();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentUser) {
+    if (userId) {
+      dispatch(fetchUserProfile(userId));
       dispatch(fetchAllPosts());
-      dispatch(fetchUserPosts(currentUser.uid));
+      dispatch(fetchUserPosts(userId));
     }
-  }, [dispatch, currentUser]);
+  }, [dispatch, userId]);
 
   return (
-    <AuthContext.Provider value={currentUser}>
-      <Router>
+    <Router>
+      <AuthProvider>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <Switch>
@@ -36,8 +37,8 @@ const Root = () => {
             <PrivateRoute exact path="/post/:id" component={PostPage} />
           </Switch>
         </ThemeProvider>
-      </Router>
-    </AuthContext.Provider>
+      </AuthProvider>
+    </Router>
   );
 };
 

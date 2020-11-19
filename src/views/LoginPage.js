@@ -6,6 +6,7 @@ import LoginPageTemplate from '../templates/LoginPageTemplate';
 import LoginButton from '../components/atoms/ButtonLogin/ButtonLogin';
 import facebook from '../assets/icons/facebook.svg';
 import google from '../assets/icons/google.svg';
+import { createUserByIntegrate } from '../helpers';
 
 const StyledLoginButton = styled(LoginButton)`
   margin-bottom: 20px;
@@ -27,7 +28,9 @@ const LoginPage = () => {
       <StyledLoginButton
         icon={facebook}
         onClick={async () => {
-          await fbAuth();
+          const user = await fbAuth();
+          createUserByIntegrate(user, 'facebook');
+
           history.replace(from);
         }}
       >
@@ -36,7 +39,9 @@ const LoginPage = () => {
       <StyledLoginButton
         icon={google}
         onClick={async () => {
-          await googleAuth();
+          const user = await googleAuth();
+          createUserByIntegrate(user, 'google');
+
           history.replace(from);
         }}
       >

@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import useFormComment from '../hooks/useFormComment';
 import UserPageTemplate from '../templates/UserPageTemplate';
 import Post from '../components/molecules/Post/Post';
@@ -32,12 +32,10 @@ const StyledButtonIcon = styled(ButtonIcon)`
   }
 `;
 
-const PostPage = ({
-  match: {
-    params: { id },
-  },
-}) => {
+const PostPage = () => {
+  const { id } = useParams();
   const post = useSelector((state) => state.posts.allposts.find((post) => post.id === id));
+
   const [addNewComment, isFormVisible, setFormVisible] = useFormComment(id);
 
   if (post) {
@@ -53,11 +51,6 @@ const PostPage = ({
     );
   }
   return <UserPageTemplate />;
-};
-
-PostPage.propTypes = {
-  match: PropTypes.object.isRequired,
-  id: PropTypes.string.isRequired,
 };
 
 export default PostPage;

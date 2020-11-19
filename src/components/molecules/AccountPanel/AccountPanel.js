@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { auth } from '../../../services/firebase';
 import settings from '../../../assets/icons/settings.svg';
 import logout from '../../../assets/icons/logout.svg';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
-import { useAuthContext } from '../../../context/auth';
+import { selectProfile } from '../../../selectors';
 
 const AccountPanelWrapper = styled.div`
   padding: 20px;
@@ -38,7 +39,7 @@ const StyledParagraph = styled.p`
 
 const AccountPanel = () => {
   const history = useHistory();
-  const currentUser = useAuthContext();
+  const { avatarURL, email } = useSelector(selectProfile);
 
   return (
     <AccountPanelWrapper>
@@ -51,9 +52,9 @@ const AccountPanel = () => {
             history.push('/login');
           }}
         />
-        <AvatarAccount avatarURL={currentUser.photoURL} />
+        <AvatarAccount avatarURL={avatarURL} />
       </AccountWrapper>
-      <StyledParagraph>{currentUser.email}</StyledParagraph>
+      <StyledParagraph>{email}</StyledParagraph>
     </AccountPanelWrapper>
   );
 };

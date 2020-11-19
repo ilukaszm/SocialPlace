@@ -1,35 +1,29 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addPost } from '../actions';
-import { db } from '../services/firebase';
-import { useAuthContext } from '../context/auth';
+import { selectProfile } from '../selectors';
+import { useAuthContext } from '../context/AuthContext';
 
 export default () => {
   const [isFormVisible, setFormVisible] = useState(false);
-  const currentUser = useAuthContext();
   const dispatch = useDispatch();
+  const { userId } = useAuthContext();
+  const { avatarURL } = useSelector(selectProfile);
 
-  const addNewPost = async ({ title, content }) => {
-    const { uid, photoURL } = currentUser;
+  const addNewPost = ({ title, content }) => {
     const newPost = {
       title,
       content,
-      avatarURL: photoURL,
+      avatarURL,
       plus: 0,
       minus: 0,
-      authorId: uid,
+      authorId: userId,
       usersVotedId: [],
       comments: [],
-      createdDate: new Date(),
+      createdAt: new Date(),
     };
 
-    const res = await db.collection('posts').add(newPost);
-
-    if (res.id) {
-      dispatch(addPost(newPost));
-    } else {
-      throw new Error('Oops! We have some error! ');
-    }
+    dispatch(addPost(newPost));
 
     setFormVisible(false);
   };

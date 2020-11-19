@@ -7,7 +7,7 @@ import Paragraph from '../../atoms/Paragraph/Paragraph';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
 import smallMinus from '../../../assets/icons/smallMinus.svg';
 import smallPlus from '../../../assets/icons/smallPlus.svg';
-import { useAuthContext } from '../../../context/auth';
+import { useAuthContext } from '../../../context/AuthContext';
 
 const StatsPostWrapper = styled.div`
   padding: 10px;
@@ -20,20 +20,17 @@ const StatsPostWrapper = styled.div`
 
 const StatsPost = ({ id, plus, minus }) => {
   const dispatch = useDispatch();
-  const currentUser = useAuthContext();
+  const { userId } = useAuthContext();
 
   return (
     <StatsPostWrapper>
       <ButtonIcon
         name="plus"
-        onClick={() => dispatch(addPlus(id, currentUser.uid, plus))}
+        onClick={() => dispatch(addPlus(id, userId, plus))}
         icon={smallPlus}
       />
       <Paragraph>{plus}</Paragraph>
-      <ButtonIcon
-        onClick={() => dispatch(addMinus(id, currentUser.uid, minus))}
-        icon={smallMinus}
-      />
+      <ButtonIcon onClick={() => dispatch(addMinus(id, userId, minus))} icon={smallMinus} />
       <Paragraph>{minus}</Paragraph>
     </StatsPostWrapper>
   );

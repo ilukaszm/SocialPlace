@@ -1,15 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { auth } from '../services/firebase';
 
 export default () => {
-  const currentUser = JSON.parse(localStorage.getItem('authUser'));
+  const authUser = JSON.parse(localStorage.getItem('authUserId'));
+  const [currentUser, setCurrentUser] = useState({ userId: authUser || null });
 
   useEffect(() => {
     const setUser = (user) => {
       if (user) {
-        localStorage.setItem('authUser', JSON.stringify(user));
+        localStorage.setItem('authUserId', JSON.stringify(user.uid));
+        setCurrentUser({ userId: user.uid });
       } else {
-        localStorage.removeItem('authUser');
+        localStorage.removeItem('authUserId');
       }
     };
     const unsubsribe = auth().onAuthStateChanged(setUser);

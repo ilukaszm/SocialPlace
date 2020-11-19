@@ -1,32 +1,31 @@
 import { useState } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import { useDispatch } from 'react-redux';
-import { db } from '../services/firebase';
-import { useAuthContext } from '../context/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAuthContext } from '../context/AuthContext';
 import { addComment } from '../actions';
 import { firestoreAutoId } from '../utils/firestoreAuthId';
+import { selectProfile } from '../selectors';
 
 export default (id) => {
   const [isFormVisible, setFormVisible] = useState(false);
-  const currentUser = useAuthContext();
+
   const dispatch = useDispatch();
+  const { userId } = useAuthContext();
+  const { avatarURL } = useSelector(selectProfile);
 
-  const addNewComment = async ({ content }) => {
-    const { uid, photoURL } = currentUser;
-
-    const newPost = {
+  const addNewComment = ({ content }) => {
+    const newComment = {
       comments: firebase.firestore.FieldValue.arrayUnion({
         commentId: firestoreAutoId(),
-        avatarURL: photoURL,
-        authorId: uid,
-        createdDate: new Date(),
+        avatarURL,
+        authorId: userId,
+        content,
+        createdAt: new Date(),
       }),
     };
 
-    await db.collection('posts').doc(id).update(newPost);
-
-    dispatch(addComment(id, photoURL, content));
+    dispatch(addComment(id, newComment));
 
     setFormVisible(false);
   };

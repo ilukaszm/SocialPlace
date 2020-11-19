@@ -1,10 +1,10 @@
 import {
-  ADD_POST,
-  ADD_COMMENT,
+  ADD_COMMENT_SUCCESS,
   ADD_PLUS_SUCCESS,
   ADD_MINUS_SUCCESS,
   FETCH_USER_POSTS_SUCCESS,
   FETCH_ALL_POSTS_SUCCESS,
+  ADD_POST_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
@@ -25,14 +25,14 @@ const postsReducer = (state = initialState, { type, payload }) => {
         hottestposts: [...payload].filter((post) => post.plus > 10),
       };
 
-    case ADD_POST:
+    case ADD_POST_SUCCESS:
       return {
         ...state,
         userposts: [...state.userposts, { ...payload }],
         allposts: [...state.allposts, { ...payload }],
       };
 
-    case ADD_COMMENT:
+    case ADD_COMMENT_SUCCESS:
       return {
         ...state,
         userposts: [

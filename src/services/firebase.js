@@ -25,7 +25,7 @@ export const googleAuth = async () => {
 
 export const fbAuth = async () => {
   await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-  firebase.auth().signInWithPopup(fbProvider);
+  return firebase.auth().signInWithPopup(fbProvider);
 };
 
 export const { auth } = firebase;
