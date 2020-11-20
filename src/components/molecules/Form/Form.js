@@ -18,7 +18,7 @@ const StyledForm = styled.form`
   background-color: white;
   border-left: 10px solid ${({ theme }) => theme.red};
   transition: 0.3s ease-in;
-  transform: translateX(${({ visibility }) => (visibility ? '0' : '100%')});
+  transform: translateX(${({ isVisibility }) => (isVisibility ? '0' : '100%')});
 
   @media (min-width: 1024px) {
     width: 60%;
@@ -44,28 +44,28 @@ const StyledTextArea = styled(StyledInput)`
   height: 300px;
 `;
 
-const Form = ({ visibility, submitFn, comment }) => {
+const Form = ({ isVisibility, submitFn, comment }) => {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => submitFn(data);
 
   return (
-    <StyledForm visibility={visibility} onSubmit={handleSubmit(onSubmit)}>
+    <StyledForm isVisibility={isVisibility} onSubmit={handleSubmit(onSubmit)}>
       <StyledHeading small>add new {comment ? 'comment' : 'post'}</StyledHeading>
       {!comment && <StyledInput name="title" placeholder="title" ref={register()} />}
-      <StyledTextArea as="textarea" name="content" placeholder="description" ref={register} />
+      <StyledTextArea as="textarea" name="content" placeholder="description" ref={register()} />
       <Button type="submit">add</Button>
     </StyledForm>
   );
 };
 
 Form.propTypes = {
-  visibility: PropTypes.bool,
+  isVisibility: PropTypes.bool,
   comment: PropTypes.bool,
   submitFn: PropTypes.func.isRequired,
 };
 
 Form.defaultProps = {
-  visibility: false,
+  isVisibility: false,
   comment: false,
 };
 

@@ -7,6 +7,7 @@ import settings from '../../../assets/icons/settings.svg';
 import logout from '../../../assets/icons/logout.svg';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
 import { selectProfile } from '../../../selectors';
+import { Avatar } from '../../atoms/Avatar/Avatar';
 
 const AccountPanelWrapper = styled.div`
   padding: 20px;
@@ -14,16 +15,6 @@ const AccountPanelWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-`;
-
-const AvatarAccount = styled.div`
-  margin-left: 10px;
-  width: 55px;
-  height: 55px;
-  border-radius: 50px;
-  background-image: url(${({ avatarURL }) => avatarURL});
-  background-position: center;
-  background-size: cover;
 `;
 
 const AccountWrapper = styled.div`
@@ -52,7 +43,7 @@ const AccountPanel = () => {
             history.push('/login');
           }}
         />
-        <AvatarAccount avatarURL={avatarURL} />
+        <Avatar avatarURL={avatarURL} />
       </AccountWrapper>
       <StyledParagraph>{email}</StyledParagraph>
     </AccountPanelWrapper>

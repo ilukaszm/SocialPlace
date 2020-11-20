@@ -16,12 +16,12 @@ const initialState = {
 const postsReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case FETCH_USER_POSTS_SUCCESS:
-      return { ...state, userposts: [...payload] };
+      return { ...state, userposts: [...state.userposts, ...payload] };
 
     case FETCH_ALL_POSTS_SUCCESS:
       return {
         ...state,
-        allposts: [...payload],
+        allposts: [...state.allposts, ...payload],
         hottestposts: [...payload].filter((post) => post.plus > 10),
       };
 
@@ -61,7 +61,17 @@ const postsReducer = (state = initialState, { type, payload }) => {
             return {
               ...post,
               plus: post.plus + 1,
-              usersVotedId: [...post.usersVotedId, payload.authorId],
+              votersId: [...post.votersId, payload.authorId],
+            };
+          }
+          return post;
+        }),
+        userposts: state.userposts.map((post) => {
+          if (post.id === payload.id) {
+            return {
+              ...post,
+              plus: post.plus + 1,
+              votersId: [...post.votersId, payload.authorId],
             };
           }
           return post;
@@ -76,7 +86,17 @@ const postsReducer = (state = initialState, { type, payload }) => {
             return {
               ...post,
               minus: post.minus + 1,
-              usersVotedId: [...post.usersVotedId, payload.authorId],
+              votersId: [...post.votersId, payload.authorId],
+            };
+          }
+          return post;
+        }),
+        userposts: state.userposts.map((post) => {
+          if (post.id === payload.id) {
+            return {
+              ...post,
+              minus: post.minus + 1,
+              votersId: [...post.votersId, payload.authorId],
             };
           }
           return post;

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Heading from '../../atoms/Heading/Heading';
 import Paragraph from '../../atoms/Paragraph/Paragraph';
-import Button from '../../atoms/Button/Button';
 import StatsPost from '../StatsPost/StatsPost';
 
 const AvatarAccount = styled.div`
@@ -19,7 +18,19 @@ const AvatarAccount = styled.div`
 
 const StyledWrapper = styled.div`
   display: flex;
-  margin-bottom: 20px;
+  margin: 20px 0;
+  animation: appear 0.3s ease-in-out;
+
+  @keyframes appear {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 `;
 
 const InnerWrapper = styled.div`
@@ -32,18 +43,44 @@ const StyledParagraph = styled(Paragraph)`
   margin: 10px 0;
 `;
 
-const Post = ({ id, avatarURL, title, content, plus, minus }) => {
+const StyledParagraphAuthor = styled(Paragraph)`
+  margin-top: 4px;
+  color: ${({ theme }) => theme.darkBlue};
+  font-size: 14px;
+  font-weight: ${({ theme }) => theme.light}};
+`;
+
+const ButtonLink = styled.a`
+  color: ${({ theme }) => theme.red};
+  text-decoration: none;
+`;
+
+const Post = ({
+  id,
+  email,
+  avatarURL,
+  title,
+  content,
+  plus,
+  minus,
+  className,
+  withoutButton,
+  votersId,
+}) => {
   return (
-    <StyledWrapper>
+    <StyledWrapper className={className}>
       <AvatarAccount avatarURL={avatarURL} />
       <InnerWrapper>
         <Heading small>{title}</Heading>
+        <StyledParagraphAuthor>Author: {email}</StyledParagraphAuthor>
         <StyledParagraph>{content}</StyledParagraph>
-        <Button to={`/post/${id}`} as={Link}>
-          comments
-        </Button>
+        {withoutButton === false && (
+          <ButtonLink to={`/post/${id}`} as={Link}>
+            show comments
+          </ButtonLink>
+        )}
       </InnerWrapper>
-      <StatsPost id={id} plus={plus} minus={minus} />
+      <StatsPost id={id} plus={plus} minus={minus} votersId={votersId} />
     </StyledWrapper>
   );
 };
@@ -51,10 +88,19 @@ const Post = ({ id, avatarURL, title, content, plus, minus }) => {
 Post.propTypes = {
   id: PropTypes.string.isRequired,
   avatarURL: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   plus: PropTypes.number.isRequired,
   minus: PropTypes.number.isRequired,
+  withoutButton: PropTypes.bool,
+  votersId: PropTypes.array.isRequired,
+  className: PropTypes.string,
+};
+
+Post.defaultProps = {
+  className: '',
+  withoutButton: false,
 };
 
 export default Post;

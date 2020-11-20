@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import useFormPost from '../hooks/useFormPost';
 import UserPageTemplate from '../templates/UserPageTemplate';
@@ -8,7 +8,10 @@ import Post from '../components/molecules/Post/Post';
 import Input from '../components/atoms/Input/Input';
 import Form from '../components/molecules/Form/Form';
 import ButtonIcon from '../components/atoms/ButtonIcon/ButtonIcon';
+import Button from '../components/atoms/Button/Button';
 import plus from '../assets/icons/plus.svg';
+import { fetchAllPosts, fetchUserPosts } from '../actions';
+import { useAuthContext } from '../context/AuthContext';
 
 const StyledInput = styled(Input)`
   width: 80vw;
@@ -41,8 +44,15 @@ const StyledButtonIcon = styled(ButtonIcon)`
   }
 `;
 
+const StyledButton = styled(Button)`
+  margin: 20px auto;
+`;
+
 const UserPage = () => {
   const pathname = useLocation().pathname.slice(1);
+  const dispatch = useDispatch();
+  const { userId } = useAuthContext();
+
   const pageType = pathname || 'hottestposts';
 
   const posts = useSelector((state) => state.posts[pageType]);
@@ -62,8 +72,20 @@ const UserPage = () => {
         .map(({ id, ...post }) => (
           <Post key={id} id={id} {...post} />
         ))}
-      <Form visibility={isFormVisible} submitFn={addNewPost} />
+      <Form isVisibility={isFormVisible} submitFn={addNewPost} />
       <StyledButtonIcon icon={plus} second onClick={() => setFormVisible(!isFormVisible)} />
+      <StyledButton
+        type="button"
+        onClick={() => {
+          if (pageType === 'userposts') {
+            dispatch(fetchUserPosts(userId));
+          } else {
+            dispatch(fetchAllPosts(userId));
+          }
+        }}
+      >
+        load more
+      </StyledButton>
     </UserPageTemplate>
   );
 };

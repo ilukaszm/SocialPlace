@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthContext } from '../context/AuthContext';
 import { addComment } from '../actions';
-import { firestoreAutoId } from '../utils/firestoreAuthId';
 import { selectProfile } from '../selectors';
 
 export default (id) => {
@@ -12,20 +9,19 @@ export default (id) => {
 
   const dispatch = useDispatch();
   const { userId } = useAuthContext();
-  const { avatarURL } = useSelector(selectProfile);
+  const { avatarURL, email } = useSelector(selectProfile);
 
   const addNewComment = ({ content }) => {
     const newComment = {
-      comments: firebase.firestore.FieldValue.arrayUnion({
-        commentId: firestoreAutoId(),
-        avatarURL,
-        authorId: userId,
-        content,
-        createdAt: new Date(),
-      }),
+      postId: id,
+      authorId: userId,
+      email,
+      avatarURL,
+      content,
+      createdAt: new Date(),
     };
 
-    dispatch(addComment(id, newComment));
+    dispatch(addComment(newComment));
 
     setFormVisible(false);
   };

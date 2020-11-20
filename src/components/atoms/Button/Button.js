@@ -11,6 +11,7 @@ const Button = styled.button`
   background-color: ${({ theme }) => theme.red};
   border: none;
   font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
   color: white;
   text-decoration: none;
 

@@ -1,7 +1,6 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import { postsRef, usersRef } from '../services/db';
-
+import { postsRef, usersRef, commentsRef } from '../services/db';
 import {
   FETCH_USER_POSTS_REQUEST,
   FETCH_USER_POSTS_SUCCESS,
@@ -12,6 +11,9 @@ import {
   FETCH_ALL_POSTS_SUCCESS,
   FETCH_ALL_POSTS_REQUEST,
   FETCH_ALL_POSTS_FAILURE,
+  FETCH_POST_COMMENTS_SUCCESS,
+  FETCH_POST_COMMENTS_REQUEST,
+  FETCH_POST_COMMENTS_FAILURE,
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
   ADD_POST_FAILURE,
@@ -26,17 +28,26 @@ import {
   ADD_MINUS_FAILURE,
 } from './types';
 
+let latestUserPostsDoc = null;
+let latestAllPostsDoc = null;
+
 export const fetchUserPosts = (userId) => async (dispatch) => {
   dispatch({ type: FETCH_USER_POSTS_REQUEST });
   const tmp = [];
 
-  const result = await postsRef.where('authorId', '==', userId).get();
+  const result = await postsRef
+    .where('authorId', '==', userId)
+    .orderBy('createdAt', 'asc')
+    .startAfter(latestUserPostsDoc || 0)
+    .limit(5)
+    .get();
 
-  if (result) {
+  if (!result.empty) {
     result.docs.forEach((doc) => {
       tmp.push({ id: doc.id, ...doc.data() });
     });
     dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: tmp });
+    latestUserPostsDoc = result.docs[result.docs.length - 1];
   } else {
     dispatch({ type: FETCH_USER_POSTS_FAILURE });
   }
@@ -46,13 +57,18 @@ export const fetchAllPosts = () => async (dispatch) => {
   dispatch({ type: FETCH_ALL_POSTS_REQUEST });
   const tmp = [];
 
-  const result = await postsRef.get();
+  const result = await postsRef
+    .orderBy('createdAt', 'asc')
+    .startAfter(latestAllPostsDoc || 0)
+    .limit(5)
+    .get();
 
-  if (result) {
+  if (!result.empty) {
     result.docs.forEach((doc) => {
       tmp.push({ id: doc.id, ...doc.data() });
     });
     dispatch({ type: FETCH_ALL_POSTS_SUCCESS, payload: tmp });
+    latestAllPostsDoc = result.docs[result.docs.length - 1];
   } else {
     dispatch({ type: FETCH_ALL_POSTS_FAILURE });
   }
@@ -73,30 +89,52 @@ export const addPost = (post) => async (dispatch) => {
   }
 };
 
-export const addComment = (id, newComment) => async (dispatch) => {
+export const addComment = (newComment) => async (dispatch) => {
   dispatch({ type: ADD_COMMENT_REQUEST });
 
   try {
-    await postsRef.doc(id).update(newComment);
-    dispatch({ type: ADD_COMMENT_SUCCESS, payload: { id, ...newComment } });
+    const result = await commentsRef.add(newComment);
+
+    if (result) {
+      dispatch({ type: ADD_COMMENT_SUCCESS, payload: { id: result.id, ...newComment } });
+    }
   } catch (error) {
     dispatch({ type: ADD_COMMENT_FAILURE });
     throw new Error(error.message);
   }
 };
 
-export const addPlus = (id, authorId, plus) => (dispatch, getState) => {
+export const fetchPostComments = (postId) => async (dispatch) => {
+  dispatch({ type: FETCH_POST_COMMENTS_REQUEST });
+  const tmp = [];
+
+  try {
+    const result = await commentsRef.where('postId', '==', postId).get();
+
+    if (result) {
+      result.docs.forEach((doc) => {
+        tmp.push({ id: doc.id, ...doc.data() });
+      });
+      dispatch({ type: FETCH_POST_COMMENTS_SUCCESS, payload: tmp });
+    }
+  } catch (error) {
+    dispatch({ type: FETCH_POST_COMMENTS_FAILURE });
+    throw new Error(error.message);
+  }
+};
+
+export const addPlus = (id, authorId, plus, avatarURL, email) => (dispatch, getState) => {
   dispatch({ type: ADD_PLUS_REQUEST });
 
-  const isUserVoted = getState()
+  const isVoter = getState()
     .posts.allposts.find((post) => post.id === id)
-    .usersVotedId.includes(authorId);
+    .votersId.includes(authorId);
 
-  if (isUserVoted) return dispatch({ type: ADD_PLUS_FAILURE });
+  if (isVoter) return dispatch({ type: ADD_PLUS_FAILURE });
 
   const newData = {
     plus: plus + 1,
-    usersVotedId: firebase.firestore.FieldValue.arrayUnion(authorId),
+    votersId: firebase.firestore.FieldValue.arrayUnion({ authorId, avatarURL, email }),
   };
 
   postsRef
@@ -106,18 +144,18 @@ export const addPlus = (id, authorId, plus) => (dispatch, getState) => {
     .catch((err) => dispatch({ type: ADD_PLUS_FAILURE, err }));
 };
 
-export const addMinus = (id, authorId, minus) => (dispatch, getState) => {
+export const addMinus = (id, authorId, minus, avatarURL, email) => (dispatch, getState) => {
   dispatch({ type: ADD_MINUS_REQUEST });
 
-  const isUserVoted = getState()
+  const isVoter = getState()
     .posts.allposts.find((post) => post.id === id)
-    .usersVotedId.includes(authorId);
+    .votersId.includes(authorId);
 
-  if (isUserVoted) return dispatch({ type: ADD_MINUS_FAILURE });
+  if (isVoter) return dispatch({ type: ADD_MINUS_FAILURE });
 
   const newData = {
     minus: minus + 1,
-    usersVotedId: firebase.firestore.FieldValue.arrayUnion(authorId),
+    votersId: firebase.firestore.FieldValue.arrayUnion({ authorId, avatarURL, email }),
   };
 
   postsRef

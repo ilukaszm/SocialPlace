@@ -8,18 +8,18 @@ export default () => {
   const [isFormVisible, setFormVisible] = useState(false);
   const dispatch = useDispatch();
   const { userId } = useAuthContext();
-  const { avatarURL } = useSelector(selectProfile);
+  const { avatarURL, email } = useSelector(selectProfile);
 
   const addNewPost = ({ title, content }) => {
     const newPost = {
       title,
       content,
+      email,
       avatarURL,
       plus: 0,
       minus: 0,
       authorId: userId,
-      usersVotedId: [],
-      comments: [],
+      votersId: [],
       createdAt: new Date(),
     };
 

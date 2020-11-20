@@ -17,6 +17,7 @@ const StyledWrapper = styled.div`
   padding-left: 50px;
   margin-bottom: 20px;
   display: flex;
+  animation: appear 0.3s ease-in-out;
 `;
 
 const InnerWrapper = styled.div`
@@ -29,11 +30,17 @@ const StyledParagraph = styled(Paragraph)`
   margin: 10px 0;
 `;
 
-const Comment = ({ avatarURL, content }) => {
+const StyledParagraphAuthor = styled(Paragraph)`
+  font-size: 14px;
+  font-weight: ${({ theme }) => theme.light};
+`;
+
+const Comment = ({ avatarURL, content, email }) => {
   return (
     <StyledWrapper>
       <AvatarAccount avatarURL={avatarURL} />
       <InnerWrapper>
+        <StyledParagraphAuthor>{email}</StyledParagraphAuthor>
         <StyledParagraph>{content}</StyledParagraph>
       </InnerWrapper>
     </StyledWrapper>
@@ -43,6 +50,7 @@ const Comment = ({ avatarURL, content }) => {
 Comment.propTypes = {
   avatarURL: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 export default Comment;

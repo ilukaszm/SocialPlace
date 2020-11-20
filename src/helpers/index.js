@@ -7,6 +7,7 @@ export const createUserByIntegrate = async (user, platform) => {
 
   if (!checkUser.exists) {
     const userData = {};
+
     if (platform === 'google') {
       const { email, picture: avatarURL } = user.additionalUserInfo.profile;
 
