@@ -30,10 +30,14 @@ const StyledAvatarsWindow = styled.div`
   border-radius: 10px;
   background-color: rgba(215, 34, 71, 0.8);
   opacity: 0.8;
-  display: ${({ isDisplay }) => (isDisplay ? 'grid' : 'none')};
   grid-template-columns: 1fr 1fr 1fr;
   justify-content: conter;
   align-items: center;
+  display: none;
+
+  @media (min-width: 1024px) {
+    display: ${({ isDisplay }) => (isDisplay ? 'grid' : 'none')};
+  }
 `;
 
 const StyledParagraph = styled(Paragraph)`
