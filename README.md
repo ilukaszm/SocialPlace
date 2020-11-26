@@ -11,7 +11,7 @@ This is a simple application, when users can add and comments their posts. The m
 ## Screenshots
 
 <p align="center">
-    <img src="https://i.imgur.com/gjuNYGc.gifv">
+    <img src="https://i.imgur.com/gjuNYGc.gif">
 </p>
 <p align="center">
     <img src="https://i.imgur.com/0zmbMIh.jpg">
