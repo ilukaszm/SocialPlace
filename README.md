@@ -11,7 +11,7 @@ This is a simple application, when users can add and comments their posts. The m
 ## Screenshots
 
 <p align="center">
-    <img src="https://i.imgur.com/gjuNYGc.gifv">
+    <img src="https://i.imgur.com/gjuNYGc.gif">
 </p>
 <p align="center">
     <img src="https://i.imgur.com/0zmbMIh.jpg">
@@ -25,7 +25,6 @@ This is a simple application, when users can add and comments their posts. The m
 - React - library for building user interfaces
 - React Router DOM - declarative Routing for React
 - Redux - library to manage global state of React
-
 - Styled-components - visual primitives for the component age
 - React Hook Form - library to creating forms
 - Firebase - serveless services from Google
@@ -33,6 +32,10 @@ This is a simple application, when users can add and comments their posts. The m
 - Prettier - code formatter
 - Husky - pre-commit tool
 - Lint-staged - pre-commit tool
+
+## Demo
+
+https://socialplace.now.sh/
 
 ## Installation 💾
 
