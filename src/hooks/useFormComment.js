@@ -11,13 +11,13 @@ export default (id) => {
   const { userId } = useAuthContext();
   const { avatarURL, email } = useSelector(selectProfile);
 
-  const addNewComment = ({ content }) => {
+  const addNewComment = ({ description }) => {
     const newComment = {
       postId: id,
       authorId: userId,
       email,
       avatarURL,
-      content,
+      description,
       createdAt: new Date(),
     };
 

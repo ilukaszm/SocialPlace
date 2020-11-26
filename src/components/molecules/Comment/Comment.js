@@ -35,13 +35,13 @@ const StyledParagraphAuthor = styled(Paragraph)`
   font-weight: ${({ theme }) => theme.light};
 `;
 
-const Comment = ({ avatarURL, content, email }) => {
+const Comment = ({ avatarURL, description, email }) => {
   return (
     <StyledWrapper>
       <AvatarAccount avatarURL={avatarURL} />
       <InnerWrapper>
         <StyledParagraphAuthor>{email}</StyledParagraphAuthor>
-        <StyledParagraph>{content}</StyledParagraph>
+        <StyledParagraph>{description}</StyledParagraph>
       </InnerWrapper>
     </StyledWrapper>
   );
@@ -49,7 +49,7 @@ const Comment = ({ avatarURL, content, email }) => {
 
 Comment.propTypes = {
   avatarURL: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
 };
 

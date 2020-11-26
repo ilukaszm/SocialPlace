@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Avatar = styled.div`
+const Avatar = styled.div`
   margin-left: 10px;
   width: 55px;
   height: 55px;
@@ -9,3 +9,5 @@ export const Avatar = styled.div`
   background-position: center;
   background-size: cover;
 `;
+
+export default Avatar;

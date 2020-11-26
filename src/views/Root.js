@@ -9,6 +9,7 @@ import { fetchAllPosts, fetchUserPosts, fetchUserProfile } from '../actions';
 import LoginPage from './LoginPage';
 import UserPage from './UserPage';
 import PostPage from './PostPage';
+import ProfileSettingsPage from './ProfileSettingsPage';
 import useAuthUser from '../hooks/useAuthUser';
 import { AuthProvider } from '../context/AuthContext';
 
@@ -35,6 +36,7 @@ const Root = () => {
             <PrivateRoute exact path="/allposts" component={UserPage} />
             <PrivateRoute exact path="/userposts" component={UserPage} />
             <PrivateRoute exact path="/post/:id" component={PostPage} />
+            <PrivateRoute exact path="/settings" component={ProfileSettingsPage} />
           </Switch>
         </ThemeProvider>
       </AuthProvider>

@@ -7,7 +7,7 @@ import settings from '../../../assets/icons/settings.svg';
 import logout from '../../../assets/icons/logout.svg';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
 import { selectProfile } from '../../../selectors';
-import { Avatar } from '../../atoms/Avatar/Avatar';
+import Avatar from '../../atoms/Avatar/Avatar';
 
 const AccountPanelWrapper = styled.div`
   padding: 20px;
@@ -35,7 +35,12 @@ const AccountPanel = () => {
   return (
     <AccountPanelWrapper>
       <AccountWrapper>
-        <ButtonIcon icon={settings} />
+        <ButtonIcon
+          icon={settings}
+          onClick={() => {
+            history.push('/settings');
+          }}
+        />
         <ButtonIcon
           icon={logout}
           onClick={async () => {

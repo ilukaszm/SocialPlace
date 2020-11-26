@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Heading from '../../atoms/Heading/Heading';
 import Paragraph from '../../atoms/Paragraph/Paragraph';
 import StatsPost from '../StatsPost/StatsPost';
+import ButtonLink from '../../atoms/ButtonLink/ButtonLink';
 
 const AvatarAccount = styled.div`
   margin-left: 10px;
@@ -50,17 +51,12 @@ const StyledParagraphAuthor = styled(Paragraph)`
   font-weight: ${({ theme }) => theme.light}};
 `;
 
-const ButtonLink = styled.a`
-  color: ${({ theme }) => theme.red};
-  text-decoration: none;
-`;
-
 const Post = ({
   id,
   email,
   avatarURL,
-  title,
-  content,
+  subject,
+  description,
   plus,
   minus,
   className,
@@ -71,9 +67,9 @@ const Post = ({
     <StyledWrapper className={className}>
       <AvatarAccount avatarURL={avatarURL} />
       <InnerWrapper>
-        <Heading small>{title}</Heading>
+        <Heading small>{subject}</Heading>
         <StyledParagraphAuthor>Author: {email}</StyledParagraphAuthor>
-        <StyledParagraph>{content}</StyledParagraph>
+        <StyledParagraph>{description}</StyledParagraph>
         {withoutButton === false && (
           <ButtonLink to={`/post/${id}`} as={Link}>
             show comments
@@ -89,8 +85,8 @@ Post.propTypes = {
   id: PropTypes.string.isRequired,
   avatarURL: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  subject: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
   plus: PropTypes.number.isRequired,
   minus: PropTypes.number.isRequired,
   withoutButton: PropTypes.bool,

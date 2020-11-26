@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { addPlus, addMinus } from '../../../actions';
 import Paragraph from '../../atoms/Paragraph/Paragraph';
-import { Avatar } from '../../atoms/Avatar/Avatar';
+import Avatar from '../../atoms/Avatar/Avatar';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
 import smallMinus from '../../../assets/icons/smallMinus.svg';
 import smallPlus from '../../../assets/icons/smallPlus.svg';

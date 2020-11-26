@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../../../assets/logoSmall.svg';
 import AccountPanel from '../../molecules/AccountPanel/AccountPanel';
@@ -34,11 +34,20 @@ const NavigationItem = styled(NavLink)`
   }
 `;
 
+const StyledLogoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const NavBar = () => {
   return (
     <>
       <NavigationWrapper>
-        <img src={logo} alt="logo" />
+        <StyledLogoWrapper>
+          <Link to="/">
+            <img src={logo} alt="logo" />
+          </Link>
+        </StyledLogoWrapper>
         <NavigationItemList>
           <li>
             <NavigationItem exact activeClassName="is-active" to="/">

@@ -61,7 +61,7 @@ const postsReducer = (state = initialState, { type, payload }) => {
             return {
               ...post,
               plus: post.plus + 1,
-              votersId: [...post.votersId, payload.authorId],
+              votersId: [...post.votersId, { ...payload.data }],
             };
           }
           return post;
@@ -71,7 +71,7 @@ const postsReducer = (state = initialState, { type, payload }) => {
             return {
               ...post,
               plus: post.plus + 1,
-              votersId: [...post.votersId, payload.authorId],
+              votersId: [...post.votersId, { ...payload.data }],
             };
           }
           return post;
@@ -86,7 +86,7 @@ const postsReducer = (state = initialState, { type, payload }) => {
             return {
               ...post,
               minus: post.minus + 1,
-              votersId: [...post.votersId, payload.authorId],
+              votersId: [...post.votersId, { ...payload.data }],
             };
           }
           return post;
@@ -96,7 +96,7 @@ const postsReducer = (state = initialState, { type, payload }) => {
             return {
               ...post,
               minus: post.minus + 1,
-              votersId: [...post.votersId, payload.authorId],
+              votersId: [...post.votersId, { ...payload.data }],
             };
           }
           return post;

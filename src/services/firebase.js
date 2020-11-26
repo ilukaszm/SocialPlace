@@ -1,6 +1,7 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 export const firebaseConfig = {
   apiKey: process.env.REACT_APP_apiKey,
@@ -30,3 +31,5 @@ export const fbAuth = async () => {
 
 export const { auth } = firebase;
 export const db = firebase.firestore();
+export const storage = firebase.storage();
+export const fieldValue = firebase.firestore.FieldValue;

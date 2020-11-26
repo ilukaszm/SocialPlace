@@ -1,4 +1,4 @@
-import { FETCH_USER_PROFILE_SUCCESS } from '../actions/types';
+import { FETCH_USER_PROFILE_SUCCESS, UPDATE_USER_PROFILE_SUCCESS } from '../actions/types';
 
 const initialState = {
   userId: '',
@@ -9,7 +9,10 @@ const initialState = {
 const profileReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case FETCH_USER_PROFILE_SUCCESS:
-      return { state, ...payload };
+      return { ...state, ...payload };
+
+    case UPDATE_USER_PROFILE_SUCCESS:
+      return { ...state, avatarURL: payload };
 
     default:
       return state;

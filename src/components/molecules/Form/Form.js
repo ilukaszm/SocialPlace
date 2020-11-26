@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
 import Heading from '../../atoms/Heading/Heading';
@@ -44,15 +45,55 @@ const StyledTextArea = styled(StyledInput)`
   height: 300px;
 `;
 
+const StyledError = styled.p`
+  color: ${({ theme }) => theme.darkRed};
+  margin-top: 8px;
+`;
+
+const ErrorWrapper = styled.div`
+  min-height: 58px;
+`;
+
 const Form = ({ isVisibility, submitFn, comment }) => {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => submitFn(data);
+  const { register, handleSubmit, errors } = useForm();
+
+  const onSubmit = (data, e) => {
+    submitFn(data);
+    e.target.reset();
+  };
 
   return (
     <StyledForm isVisibility={isVisibility} onSubmit={handleSubmit(onSubmit)}>
       <StyledHeading small>add new {comment ? 'comment' : 'post'}</StyledHeading>
-      {!comment && <StyledInput name="title" placeholder="title" ref={register()} />}
-      <StyledTextArea as="textarea" name="content" placeholder="description" ref={register()} />
+      <ErrorWrapper>
+        <StyledError>{errors?.subject?.message}</StyledError>
+        <StyledError>{errors?.description?.message}</StyledError>
+      </ErrorWrapper>
+      {!comment && (
+        <StyledInput
+          name="subject"
+          type="text"
+          id="subject"
+          placeholder="subject"
+          ref={register({
+            required: { value: true, message: 'Subject field is required!' },
+            maxLength: { value: 80, message: 'Subject field has to max 80 characters!' },
+            minLength: { value: 10, message: 'Subject field has to min 10 characters!' },
+          })}
+        />
+      )}
+      <StyledTextArea
+        as="textarea"
+        type="text"
+        name="description"
+        id="description"
+        placeholder="description"
+        ref={register({
+          required: { value: true, message: 'Description field is required!' },
+          maxLength: { value: 400, message: 'Subject field has to max 400 characters!' },
+          minLength: { value: 10, message: 'Subject field has to min 10 characters!' },
+        })}
+      />
       <Button type="submit">add</Button>
     </StyledForm>
   );

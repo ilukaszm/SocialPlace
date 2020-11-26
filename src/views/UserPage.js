@@ -68,7 +68,7 @@ const UserPage = () => {
         onChange={(e) => setSearchPost(e.target.value)}
       />
       {posts
-        .filter(({ title }) => title.toLowerCase().includes(searchPost.toLowerCase()))
+        .filter(({ subject }) => subject.toLowerCase().includes(searchPost.toLowerCase()))
         .map(({ id, ...post }) => (
           <Post key={id} id={id} {...post} />
         ))}

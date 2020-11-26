@@ -10,10 +10,10 @@ export default () => {
   const { userId } = useAuthContext();
   const { avatarURL, email } = useSelector(selectProfile);
 
-  const addNewPost = ({ title, content }) => {
+  const addNewPost = ({ subject, description }) => {
     const newPost = {
-      title,
-      content,
+      subject,
+      description,
       email,
       avatarURL,
       plus: 0,
