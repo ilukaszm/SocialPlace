@@ -2,15 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Heading from '../../atoms/Heading/Heading';
 import Paragraph from '../../atoms/Paragraph/Paragraph';
 import StatsPost from '../StatsPost/StatsPost';
 import ButtonLink from '../../atoms/ButtonLink/ButtonLink';
+import { useAuthContext } from '../../../context/AuthContext';
+import { deletePost } from '../../../actions';
+import ButtonDelete from '../../atoms/ButtonDelete';
 
 const AvatarAccount = styled.div`
   margin-left: 10px;
-  width: 55px;
-  height: 55px;
+  margin-bottom: 5px;
+  width: 45px;
+  height: 45px;
   border-radius: 50px;
   background-image: url(${({ avatarURL }) => avatarURL});
   background-size: cover;
@@ -19,7 +24,8 @@ const AvatarAccount = styled.div`
 
 const StyledWrapper = styled.div`
   display: flex;
-  margin: 20px 0;
+  margin: 10px 28px;
+
   animation: appear 0.3s ease-in-out;
 
   @keyframes appear {
@@ -37,7 +43,7 @@ const StyledWrapper = styled.div`
 const InnerWrapper = styled.div`
   display: flex;
   padding: 0 10px;
-  width: 70%;
+  width: 78%;
   flex-direction: column;
 `;
 const StyledParagraph = styled(Paragraph)`
@@ -51,9 +57,20 @@ const StyledParagraphAuthor = styled(Paragraph)`
   font-weight: ${({ theme }) => theme.light}};
 `;
 
+const AccountWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const StyledHeading = styled(Heading)`
+  font-size: 16px;
+`;
+
 const Post = ({
   id,
   email,
+  authorId,
   avatarURL,
   subject,
   description,
@@ -63,11 +80,19 @@ const Post = ({
   withoutButton,
   votersId,
 }) => {
+  const { userId } = useAuthContext();
+  const dispatch = useDispatch();
+
   return (
     <StyledWrapper className={className}>
-      <AvatarAccount avatarURL={avatarURL} />
+      <AccountWrapper>
+        <AvatarAccount avatarURL={avatarURL} />
+        {authorId === userId && (
+          <ButtonDelete type="button" onClick={() => dispatch(deletePost(id))} />
+        )}
+      </AccountWrapper>
       <InnerWrapper>
-        <Heading small>{subject}</Heading>
+        <StyledHeading small>{subject}</StyledHeading>
         <StyledParagraphAuthor>Author: {email}</StyledParagraphAuthor>
         <StyledParagraph>{description}</StyledParagraph>
         {withoutButton === false && (
@@ -84,6 +109,7 @@ const Post = ({
 Post.propTypes = {
   id: PropTypes.string.isRequired,
   avatarURL: PropTypes.string.isRequired,
+  authorId: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   subject: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,

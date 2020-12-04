@@ -17,11 +17,11 @@ const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   background-color: white;
-  border-left: 10px solid ${({ theme }) => theme.red};
   transition: 0.3s ease-in;
   transform: translateX(${({ isVisibility }) => (isVisibility ? '0' : '100%')});
 
   @media (min-width: 1024px) {
+    border-left: 10px solid ${({ theme }) => theme.red};
     width: 60%;
   }
 

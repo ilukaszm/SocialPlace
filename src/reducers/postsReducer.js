@@ -5,6 +5,7 @@ import {
   FETCH_USER_POSTS_SUCCESS,
   FETCH_ALL_POSTS_SUCCESS,
   ADD_POST_SUCCESS,
+  DELETE_POST_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
@@ -28,8 +29,15 @@ const postsReducer = (state = initialState, { type, payload }) => {
     case ADD_POST_SUCCESS:
       return {
         ...state,
-        userposts: [...state.userposts, { ...payload }],
-        allposts: [...state.allposts, { ...payload }],
+        userposts: [{ ...payload }, ...state.userposts],
+        allposts: [{ ...payload }, ...state.allposts],
+      };
+
+    case DELETE_POST_SUCCESS:
+      return {
+        ...state,
+        userposts: state.userposts.filter((post) => post.id !== payload.id),
+        allposts: state.userposts.filter((post) => post.id !== payload.id),
       };
 
     case ADD_COMMENT_SUCCESS:

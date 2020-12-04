@@ -5,6 +5,7 @@ import logo from '../../../assets/logoSmall.svg';
 import AccountPanel from '../../molecules/AccountPanel/AccountPanel';
 
 const NavigationWrapper = styled.nav`
+  width: 100%;
   display: flex;
   flex-direction: column;
 
@@ -23,6 +24,7 @@ const NavigationItemList = styled.ul`
 `;
 
 const NavigationItem = styled(NavLink)`
+  width: 120px;
   display: block;
   text-decoration: none;
   color: black;
@@ -35,8 +37,13 @@ const NavigationItem = styled(NavLink)`
 `;
 
 const StyledLogoWrapper = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
+`;
+
+const StyledLogo = styled.img`
+  width: 320px;
 `;
 
 const NavBar = () => {
@@ -45,7 +52,7 @@ const NavBar = () => {
       <NavigationWrapper>
         <StyledLogoWrapper>
           <Link to="/">
-            <img src={logo} alt="logo" />
+            <StyledLogo src={logo} alt="logo" />
           </Link>
         </StyledLogoWrapper>
         <NavigationItemList>

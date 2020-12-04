@@ -19,6 +19,9 @@ import {
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
   ADD_POST_FAILURE,
+  DELETE_POST_REQUEST,
+  DELETE_POST_SUCCESS,
+  DELETE_POST_FAILURE,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
   ADD_COMMENT_FAILURE,
@@ -33,9 +36,10 @@ import {
 let latestUserPostsDoc = null;
 let latestAllPostsDoc = null;
 
-export const fetchUserPosts = (userId) => async (dispatch) => {
+export const fetchUserPosts = (userId) => async (dispatch, getState) => {
   dispatch({ type: FETCH_USER_POSTS_REQUEST });
   const tmp = [];
+  const currentUserPosts = getState().posts.userposts;
 
   const result = await postsRef
     .where('authorId', '==', userId)
@@ -46,19 +50,23 @@ export const fetchUserPosts = (userId) => async (dispatch) => {
 
   if (!result.empty) {
     result.docs.forEach((doc) => {
-      tmp.push({ id: doc.id, ...doc.data() });
+      const isElementExist = currentUserPosts.find((element) => element.id === doc.id);
+      if (!isElementExist) {
+        tmp.push({ id: doc.id, ...doc.data() });
+      }
     });
 
-    dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: tmp });
+    dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: tmp.reverse() });
     latestUserPostsDoc = result.docs[result.docs.length - 1];
   } else {
     dispatch({ type: FETCH_USER_POSTS_FAILURE });
   }
 };
 
-export const fetchAllPosts = () => async (dispatch) => {
+export const fetchAllPosts = () => async (dispatch, getState) => {
   dispatch({ type: FETCH_ALL_POSTS_REQUEST });
   const tmp = [];
+  const currentAllPosts = getState().posts.allposts;
 
   const result = await postsRef
     .orderBy('createdAt', 'asc')
@@ -68,10 +76,13 @@ export const fetchAllPosts = () => async (dispatch) => {
 
   if (!result.empty) {
     result.docs.forEach((doc) => {
-      tmp.push({ id: doc.id, ...doc.data() });
+      const isElementExist = currentAllPosts.find((element) => element.id === doc.id);
+      if (!isElementExist) {
+        tmp.push({ id: doc.id, ...doc.data() });
+      }
     });
 
-    dispatch({ type: FETCH_ALL_POSTS_SUCCESS, payload: tmp });
+    dispatch({ type: FETCH_ALL_POSTS_SUCCESS, payload: tmp.reverse() });
 
     latestAllPostsDoc = result.docs[result.docs.length - 1];
   } else {
@@ -89,9 +100,23 @@ export const addPost = (post) => async (dispatch) => {
       dispatch({ type: ADD_POST_SUCCESS, payload: { id: result.id, ...post } });
     }
   } catch (error) {
-    dispatch({ type: ADD_POST_FAILURE });
+    dispatch({ type: ADD_POST_FAILURE, error });
 
     throw new Error(error.message);
+  }
+};
+
+export const deletePost = (id) => async (dispatch) => {
+  dispatch({ type: DELETE_POST_REQUEST });
+
+  try {
+    await postsRef.doc(id).delete();
+
+    dispatch({ type: DELETE_POST_SUCCESS, payload: { id } });
+  } catch (error) {
+    dispatch({ type: DELETE_POST_FAILURE, error });
+
+    throw new Error(error);
   }
 };
 
@@ -105,7 +130,7 @@ export const addComment = (newComment) => async (dispatch) => {
       dispatch({ type: ADD_COMMENT_SUCCESS, payload: { id: result.id, ...newComment } });
     }
   } catch (error) {
-    dispatch({ type: ADD_COMMENT_FAILURE });
+    dispatch({ type: ADD_COMMENT_FAILURE, error });
 
     throw new Error(error.message);
   }
@@ -126,7 +151,7 @@ export const fetchPostComments = (postId) => async (dispatch) => {
       dispatch({ type: FETCH_POST_COMMENTS_SUCCESS, payload: tmp });
     }
   } catch (error) {
-    dispatch({ type: FETCH_POST_COMMENTS_FAILURE });
+    dispatch({ type: FETCH_POST_COMMENTS_FAILURE, error });
 
     throw new Error(error.message);
   }
@@ -180,7 +205,7 @@ export const addMinus = (id, authorId, minus, avatarURL, email) => async (dispat
 
     dispatch({ type: ADD_MINUS_SUCCESS, payload: { id, data: { authorId, avatarURL, email } } });
   } catch (error) {
-    dispatch({ type: ADD_MINUS_FAILURE });
+    dispatch({ type: ADD_MINUS_FAILURE, error });
 
     throw new Error(error.message);
   }
@@ -199,7 +224,7 @@ export const fetchUserProfile = (userId) => async (dispatch) => {
       });
     }
   } catch (error) {
-    dispatch({ type: FETCH_USER_PROFILE_FAILURE });
+    dispatch({ type: FETCH_USER_PROFILE_FAILURE, error });
 
     throw new Error(error.message);
   }
@@ -213,7 +238,7 @@ export const updateUserProfile = (userId, avatarURL) => async (dispatch) => {
 
     dispatch({ type: UPDATE_USER_PROFILE_SUCCESS, payload: avatarURL });
   } catch (error) {
-    dispatch({ type: UPDATE_USER_PROFILE_FAILURE });
+    dispatch({ type: UPDATE_USER_PROFILE_FAILURE, error });
 
     throw new Error(error.message);
   }

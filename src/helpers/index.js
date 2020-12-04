@@ -1,5 +1,5 @@
 import { auth } from '../services/firebase';
-import { usersRef } from '../services/db';
+import { usersRef, postsRef, commentsRef } from '../services/db';
 
 export const createUserByIntegrate = async (user, platform) => {
   const { uid } = await auth().currentUser;
@@ -30,5 +30,27 @@ export const createUserByIntegrate = async (user, platform) => {
     } catch (error) {
       throw new Error(error.message);
     }
+  }
+};
+
+export const getOnePost = async (id) => {
+  try {
+    const post = postsRef.doc(id).get();
+    if (post) {
+      return post;
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const getPostComments = async (id) => {
+  try {
+    const comments = commentsRef.where('postId', '==', id).get();
+    if (comments) {
+      return comments;
+    }
+  } catch (error) {
+    throw new Error(error.message);
   }
 };

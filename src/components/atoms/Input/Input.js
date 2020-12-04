@@ -2,7 +2,8 @@ import styled, { css } from 'styled-components';
 import searchIco from '../../../assets/icons/search.svg';
 
 const Input = styled.input`
-  width: 200px;
+  padding: 0 35px;
+  width: 150px;
   height: 40px;
   display: block;
   border: none;
@@ -10,7 +11,6 @@ const Input = styled.input`
   background-color: ${({ theme }) => theme.darkBlue};
   font-family: 'Montserrat', sans-serif;
   color: white;
-  padding-left: 40px;
   border: 2px solid ${({ theme }) => theme.darkBlue};
 
   ::placeholder {
